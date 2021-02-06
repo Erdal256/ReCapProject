@@ -1,26 +1,54 @@
 ﻿using Business.Concrate;
+using Business.Concrete;
 using DataAccess.Concrate;
+using DataAccess.Concrate.EntityFramework;
+using DataAccess.Concrete.EntityFramework;
 using Entities.Concrate;
 using System;
+using System.Collections.Generic;
 
 namespace ConsoleUI
 {
     class Program
     {
+        static int indexMainMenu = 0;
         static void Main(string[] args)
         {
-            Car car = new Car() { Id = 5, BrandId = 2,ColorId=3,DailyPrice=111,Description="Opel",ModelYear="12.19.111" };
-            Car car1 = new Car() { Id = 1, BrandId = 2,ColorId=3,DailyPrice=111,Description="Mercedes",ModelYear="12.19.111" };
-            CarManager carManager = new CarManager(new InMemoryCarDal());
-            foreach (var item in carManager.GetAll())
+
+            CarManager carManager = new CarManager(new EfCarDal());
+            foreach (var product in carManager.GetAll())
             {
-                Console.WriteLine(item.Description);
+                Console.WriteLine(product.ModelYear);
             }
-            carManager.Add(car);
-            carManager.Delete(car);
-            carManager.GetAll();
-            carManager.GetById(1);
-            carManager.Update(car1);
+            Console.WriteLine("--CAR--");
+
+            BrandManager brandManager = new BrandManager(new EfBrandDal());
+            foreach (var brand in brandManager.GetAll())
+            {
+                Console.WriteLine(brand.BrandName);
+            }
+            Console.WriteLine("--BRAND--");
+
+            ColorManager colorManager = new ColorManager(new EfColorDal());
+            foreach (var color in colorManager.GetAll())
+            {
+                Console.WriteLine(color.ColorName);
+            }
+            Console.WriteLine("--COLOR--");
+
+            List<string> menuItems = new List<string>()
+            {
+                "Yeni Araç Kayıt",
+                "Araç Silme İşlemi",
+                "Tüm Araçları Listele",
+                "Araç Bilgisi Güncelle",
+                "Yeni Marka Girişi",
+                "Marka Silme İşlemi",
+                "Tüm Markaları Listele",
+                "Model Yıllarına Göre Listele",
+                "Fiyatına Göre Listele",
+                "Çıkış"
+            };
         }
     }
 }
